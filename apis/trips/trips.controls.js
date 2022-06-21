@@ -1,5 +1,4 @@
 const Trip = require('../../database/models/Trip');
-const { trip } = require('./trips.routes');
 
 exports.tripCreate = async (req, res) => {
   try {

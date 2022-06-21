@@ -1,6 +1,9 @@
 const express = require('express');
+const passport = require('passport');
+const { localStrategy, jwtStrategy } = require('./middlewares/passport');
 //routes
 const tripsRoute = require('./apis/trips/trips.routes');
+const authRouter = require('./apis/auth/auth.router');
 
 //db
 const connectDB = require('./database/connection');
@@ -8,7 +11,15 @@ const app = express();
 
 //middleware
 app.use(express.json());
+app.use(passport.initialize());
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
+//route
+app.use('/', tripsRoute);
+app.use('/', authRouter);
+
+// TODO: fix this and add it into an external file in middlewares folder
 //Error Handling Middleware
 app.use((err, req, res, next) => {
   console.log('🚀 ~ file: app.js ~ line 17 ~ app.use ~ err', err);
@@ -21,9 +32,6 @@ app.use((req, res, next) => {
   err.status = 404;
   next(err);
 });
-
-//route
-app.use('/', tripsRoute);
 
 connectDB();
 
