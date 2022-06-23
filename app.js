@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const { localStrategy, jwtStrategy } = require('./middlewares/passport');
+const cors = require('cors');
 //routes
 const tripsRoute = require('./apis/trips/trips.routes');
 const authRouter = require('./apis/auth/auth.router');
@@ -11,12 +12,13 @@ const app = express();
 
 //middleware
 app.use(express.json());
+app.use(cors());
 app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 //route
-app.use('/', tripsRoute);
+app.use('/trips', tripsRoute);
 app.use('/', authRouter);
 
 // TODO: fix this and add it into an external file in middlewares folder

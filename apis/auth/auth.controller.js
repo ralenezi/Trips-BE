@@ -6,6 +6,7 @@ exports.signup = async (req, res) => {
   const saltRounds = 10;
   try {
     req.body.password = await bcrypt.hash(req.body.password, saltRounds);
+    req.body.email = req.body.email.toLowerCase();
     const user = await User.create(req.body);
     const accessToken = jwt(user); //this is the token that is sent to the user, sign in after sign up
     res.status(201).json(accessToken);

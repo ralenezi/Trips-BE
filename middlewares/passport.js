@@ -10,7 +10,7 @@ exports.localStrategy = new LocalStrategy(
   async (email, password, done) => {
     try {
       const user = await User.findOne({
-        email
+        email: email.toLowerCase()
       });
       // check if password match
       const userAuthenticated =
